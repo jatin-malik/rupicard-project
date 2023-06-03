@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Data Form</title>
+  </head>
+  <body>
+    <form id="userDataForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required><br><br>
+
+      <label for="mobile">Mobile Number:</label>
+      <input type="text" id="mobile" name="mobile" required><br><br>
+
+      <input type="submit" value="Submit">
+    </form>
+
+    <script>
+      document.getElementById("userDataForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Retrieve form data
+        const name = document.getElementById("name").value;
+        const mobile_number = document.getElementById("mobile").value;
+        console.log("Sending the data ----> ",name," ",mobile_number)
+        // Send data to Google Sheets using Fetch API
+        fetch("https://script.google.com/macros/s/AKfycbwwgBhEbDwKLBJgqI0QG70McK4ckWCPPlCgIS7MRMqY5i5jkTgWXZAUoA1vW6MyCNx7/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: name,
+            mobile_number: mobile_number
+          })
+        })
+        .then(function(response) {
+          console.log("Data submitted successfully");
+          // Optionally, display a success message to the user
+        })
+        .catch(function(error) {
+          console.error("Error submitting data:", error);
+          // Optionally, display an error message to the user
+        });
+
+        // Clear form inputs
+        document.getElementById("name").value = "";
+        document.getElementById("mobile").value = "";
+      });
+    </script>
+  </body>
+</html>
